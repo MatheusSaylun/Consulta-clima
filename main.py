@@ -14,7 +14,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-API_KEY = "3832677c62ef8582483eb284a04035c6"
+API_KEY = "insira sua API"
 
 @app.get("/clima/{cidade}")
 def obter_clima(cidade: str):
