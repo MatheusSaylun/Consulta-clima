@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8" />
+    <title>Clima</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(to right, #200177, #00acfc);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+            color: #ffffff;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .busca-container {
+            display: flex;
+            gap: 15px; /* espaço entre input e botão */
+            margin-bottom: 20px;
+        }
+
+        input {
+            padding: 10px;
+            width: 250px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            /* remove margin-right */
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            background-color: #4CAF50;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #resultado {
+            margin-top: 30px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        #resultado h2 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Consultar Clima</h1>
+    <div class="busca-container">
+        <input type="text" id="cidade" placeholder="Digite a cidade" />
+        <button onclick="buscarClima()">Buscar</button>
+    </div>
+
+    <div id="resultado"></div>
+
+    <script>
+        async function buscarClima() {
+            const cidade = document.getElementById('cidade').value;
+            const resposta = await fetch(`http://127.0.0.1:8000/clima/${cidade}`);
+
+            if (resposta.status === 200) {
+                const dados = await resposta.json();
+                document.getElementById('resultado').innerHTML = `
+                    <h2>Clima em ${dados.cidade}, ${dados.pais}</h2>
+                    <p>Temperatura: ${dados.temperatura} °C</p>
+                    <p>Condição: ${dados.descricao}</p>
+                `;
+            } else {
+                document.getElementById('resultado').innerHTML = "<p>Cidade não encontrada.</p>";
+            }
+        }
+    </script>
+</body>
+</html>
